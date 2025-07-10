@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 生成新的数独游戏
     function generateNewGame() {
         const rows = parseInt(document.getElementById('rows').value) || 9;
-        const cols = parseInt(document.getElementById('cols').value) || 9;
+        const cols = parseInt(document.getElementById('rows').value) || 9;
 
         if (highlight == 0) {
             highlight = 1
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
         puzzle = removeNumbers(board, difficulty, rows, cols);
 
         // 渲染数独谜题
-        renderPuzzle(rows, cols);
+        renderPuzzle(rows, rows);
 
         // 开始计时
         startTimer();
@@ -224,6 +224,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // 检查列
         for (let i = 0; i < rows; i++) {
             if (grid[i][col] === num) return false;
+        }
+
+        // 对于非完全平方数的行数和列数，不进行子网格检查
+        if (Math.sqrt(rows) % 1 !== 0 || Math.sqrt(cols) % 1 !== 0) {
+            return true;
         }
 
         // 检查子网格
@@ -292,9 +297,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 渲染数独谜题
-    function renderPuzzle(rows, cols) {
+    function renderPuzzle(rows, rows) {
         for (let i = 0; i < rows; i++) {
-            for (let j = 0; j < cols; j++) {
+            for (let j = 0; j < rows; j++) {
                 const cell = document.getElementById(`cell-${i}-${j}`);
 
                 if (puzzle[i][j] !== 0) {
@@ -339,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 检查游戏是否完成
     function checkGameCompletion() {
         const rows = document.getElementById('rows').value;
-        const cols = document.getElementById('cols').value;
+        const cols = document.getElementById('rows').value;
 
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < cols; j++) {
@@ -380,7 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!gameStarted) return;
 
         const rows = document.getElementById('rows').value;
-        const cols = document.getElementById('cols').value;
+        const cols = document.getElementById('rows').value;
 
         // 找到一个空单元格
         let emptyCells = [];
@@ -410,7 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!gameStarted) return;
         answer = 1;
         const rows = document.getElementById('rows').value;
-        const cols = document.getElementById('cols').value;
+        const cols = document.getElementById('rows').value;
 
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < cols; j++) {
@@ -443,7 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
             icon.className = 'fa fa-trophy text-6xl text-accent mb-4';
             title.textContent = '恭喜你！';
             title.className = 'text-2xl font-bold mb-2 text-secondary';
-            message.textContent = `你完成了${document.getElementById('rows').value}x${document.getElementById('cols').value}数独游戏，用时 ${Math.floor(timeElapsed / 60)} 分 ${timeElapsed % 60} 秒。`;
+            message.textContent = `你完成了${document.getElementById('rows').value}x${document.getElementById('rows').value}数独游戏，用时 ${Math.floor(timeElapsed / 60)} 分 ${timeElapsed % 60} 秒。`;
         }
 
         // 显示弹窗并添加动画
@@ -476,7 +481,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.cell-highlight').forEach(cell => {
             cell.classList.remove('cell-highlight');
         });
-        renderPuzzle(rows, cols)
+        renderPuzzle(rows, rows)
         highlight = 0;
         document.getElementById('timer').textContent = '00:00';
         document.getElementById('progress').textContent = '0%';
